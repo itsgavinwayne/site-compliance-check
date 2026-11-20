@@ -1,0 +1,647 @@
+{
+  "tool": "site-compliance-check",
+  "version": "0.1.0",
+  "registryVersion": "0.0.1",
+  "url": "https://www.gov.uk",
+  "finalUrl": "https://www.gov.uk/",
+  "scannedAt": "2026-11-20T04:15:21.402Z",
+  "finishedAt": "2026-11-20T04:15:59.953Z",
+  "summary": {
+    "fail": 7,
+    "manual": 15,
+    "error": 0,
+    "pass": 8,
+    "na": 3
+  },
+  "results": [
+    {
+      "id": "P-01",
+      "category": "privacy-policy",
+      "missing": "没有隐私政策，或页脚点不到",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "页脚链接「Privacy」→ https://www.gov.uk/help/privacy-notice（HTTP 200）"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "P-02",
+      "category": "privacy-policy",
+      "missing": "隐私政策未说明收集哪些数据、用途、法律依据、保存期限",
+      "markets": [
+        "EU",
+        "UK",
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "P-03",
+      "category": "privacy-policy",
+      "missing": "未列出接收数据的第三方（统计、CRM、邮件服务等）",
+      "markets": [
+        "EU",
+        "UK",
+        "CN",
+        "US"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "P-04",
+      "category": "privacy-policy",
+      "missing": "未说明数据跨境传输",
+      "markets": [
+        "EU",
+        "UK",
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "P-05",
+      "category": "privacy-policy",
+      "missing": "未说明用户如何查阅、更正、删除个人数据",
+      "markets": [
+        "EU",
+        "UK",
+        "US",
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "P-06",
+      "category": "privacy-policy",
+      "missing": "隐私政策内容与网站实际使用的工具不一致",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "P-07",
+      "category": "privacy-policy",
+      "missing": "没有中文版隐私政策",
+      "markets": [
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "hybrid",
+      "status": "fail",
+      "evidence": [
+        "隐私政策链接与页面中均未发现中文版本信号"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "C-01",
+      "category": "cookies",
+      "missing": "没有 Cookie 同意横幅",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "识别到横幅：「Cookies on GOV.UK We use some essential cookies to make this website work. We’d …」",
+        "按钮：Accept additional cookies[accept]、Reject additional cookies[reject]、View cookies[other]"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "C-02",
+      "category": "cookies",
+      "missing": "用户同意前已加载统计/广告类 Cookie 或脚本",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "同意前未发现已知追踪 Cookie 或请求（共 16 个请求、1 个 Cookie）",
+        "拒绝后（含刷新与内页 https://www.gov.uk/browse）也未发现"
+      ],
+      "note": "追踪清单见 src/trackers.js，未收录的工具不会被识别",
+      "automated": true
+    },
+    {
+      "id": "C-03",
+      "category": "cookies",
+      "missing": "横幅没有拒绝按钮，或拒绝比接受更难操作",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "横幅按钮：Accept additional cookies[accept]、Reject additional cookies[reject]、View cookies[other]"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "C-04",
+      "category": "cookies",
+      "missing": "同意选项默认勾选，或不能按类别选择",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "hybrid",
+      "status": "manual",
+      "evidence": [
+        "横幅无分类开关，另有入口：「View cookies」",
+        "截图：screenshots/before.png"
+      ],
+      "note": "请人工确认该入口能按类别选择",
+      "automated": true
+    },
+    {
+      "id": "C-05",
+      "category": "cookies",
+      "missing": "同意后没有入口修改或撤回同意",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "hybrid",
+      "status": "manual",
+      "evidence": [
+        "入口：「change your cookie settings」"
+      ],
+      "note": "请人工确认点击后能修改或撤回同意",
+      "automated": true
+    },
+    {
+      "id": "C-06",
+      "category": "cookies",
+      "missing": "没有 Cookie 政策（名称、提供方、用途、有效期）",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "页脚链接「Cookies」→ https://www.gov.uk/help/cookies（HTTP 200）"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "C-07",
+      "category": "cookies",
+      "missing": "无法出示用户同意记录",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "C-08",
+      "category": "cookies",
+      "missing": "第三方嵌入（YouTube、Google 地图、Google Fonts 等）在同意前加载",
+      "markets": [
+        "EU"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "同意前未请求已知第三方嵌入域名（共 16 个请求）"
+      ],
+      "note": "嵌入清单见 src/trackers.js",
+      "automated": true
+    },
+    {
+      "id": "F-01",
+      "category": "forms",
+      "missing": "收集个人信息的表单旁没有隐私政策链接",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "na",
+      "evidence": [],
+      "note": "首页与联系页未发现收集 email/电话的表单；其他页面的表单需人工确认",
+      "automated": true
+    },
+    {
+      "id": "F-02",
+      "category": "forms",
+      "missing": "营销订阅默认勾选，或与提交捆绑",
+      "markets": [
+        "EU",
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "na",
+      "evidence": [],
+      "note": "未发现营销/订阅类复选框；\"与提交捆绑\"需人工确认",
+      "automated": true
+    },
+    {
+      "id": "F-03",
+      "category": "forms",
+      "missing": "营销邮件没有退订方式",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "F-04",
+      "category": "forms",
+      "missing": "收集敏感个人信息未单独取得同意",
+      "markets": [
+        "CN",
+        "EU"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "I-01",
+      "category": "disclosure",
+      "missing": "缺少服务提供者信息（公司名、地址、邮箱、注册号、增值税号）",
+      "markets": [
+        "EU"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "hybrid",
+      "status": "fail",
+      "evidence": [
+        "未发现公司名、地址、邮箱、注册号、增值税号"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "I-02",
+      "category": "disclosure",
+      "missing": "缺少公司名称、注册号、注册地址",
+      "markets": [
+        "UK"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "hybrid",
+      "status": "fail",
+      "evidence": [
+        "未发现公司名、注册号、地址"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "I-03",
+      "category": "disclosure",
+      "missing": "没有 Impressum（运营者信息页）",
+      "markets": [
+        "DE",
+        "AT"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "fail",
+      "evidence": [
+        "首页未发现「Impressum」链接"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "CN-01",
+      "category": "china",
+      "missing": "页脚没有 ICP 备案号，或未链接到 beian.miit.gov.cn",
+      "markets": [
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "fail",
+      "evidence": [
+        "首页未发现ICP 备案号文本"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "CN-02",
+      "category": "china",
+      "missing": "没有公安联网备案号",
+      "markets": [
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "auto",
+      "status": "fail",
+      "evidence": [
+        "首页未发现公安联网备案号文本"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "CN-04",
+      "category": "china",
+      "missing": "个人信息出境未单独取得同意",
+      "markets": [
+        "CN"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "L-01",
+      "category": "licensing",
+      "missing": "字体、图片、视频、图标没有商用授权凭证",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "must",
+      "condition": null,
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "C-09",
+      "category": "cookies",
+      "missing": "没有 \"Do Not Sell or Share My Personal Information\" 链接",
+      "markets": [
+        "US"
+      ],
+      "level": "conditional",
+      "condition": "达到加州等州隐私法的营收或数据量门槛",
+      "check": "auto",
+      "status": "fail",
+      "evidence": [
+        "首页未发现 \"Do Not Sell or Share\" / \"Your Privacy Choices\" 类链接"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "C-10",
+      "category": "cookies",
+      "missing": "未响应浏览器 GPC（全局隐私控制）信号",
+      "markets": [
+        "US"
+      ],
+      "level": "conditional",
+      "condition": "达到加州、科罗拉多等州隐私法门槛",
+      "check": "hybrid",
+      "status": "na",
+      "evidence": [],
+      "note": "无 GPC 时也未发现追踪，无法比较；如追踪只在同意后加载，需人工在\"同意后 + GPC\"下确认",
+      "automated": true
+    },
+    {
+      "id": "CN-03",
+      "category": "china",
+      "missing": "涉及经营性业务但没有 ICP 经营许可证",
+      "markets": [
+        "CN"
+      ],
+      "level": "conditional",
+      "condition": "网站提供经营性互联网信息服务",
+      "check": "manual",
+      "status": "manual",
+      "evidence": [],
+      "note": "只能人工确认",
+      "automated": false
+    },
+    {
+      "id": "A-01",
+      "category": "accessibility",
+      "missing": "未达到 WCAG 2.1 AA",
+      "markets": [
+        "EU",
+        "US"
+      ],
+      "level": "conditional",
+      "condition": "欧盟 EAA 范围内（电商、面向消费者的服务）为必须；美国 ADA 有诉讼风险",
+      "check": "hybrid",
+      "status": "manual",
+      "evidence": [
+        "axe 首页未发现违规（通过 31 项，待人工 0 项）"
+      ],
+      "note": "自动规则只覆盖 WCAG 一部分，需人工审查键盘操作、读屏、对比度等",
+      "automated": true
+    },
+    {
+      "id": "A-02",
+      "category": "accessibility",
+      "missing": "没有无障碍声明",
+      "markets": [
+        "EU"
+      ],
+      "level": "conditional",
+      "condition": "属于欧盟 EAA 范围",
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "页脚链接「Accessibility statement」→ https://www.gov.uk/help/accessibility-statement（HTTP 200）"
+      ],
+      "note": "",
+      "automated": true
+    },
+    {
+      "id": "P-08",
+      "category": "privacy-policy",
+      "missing": "隐私政策没有更新日期",
+      "markets": [
+        "US",
+        "EU"
+      ],
+      "level": "recommended",
+      "condition": null,
+      "check": "hybrid",
+      "status": "manual",
+      "evidence": [
+        "隐私政策页发现日期：「Last updated:\n1 June 2025」"
+      ],
+      "note": "请人工确认这是隐私政策的更新/生效日期",
+      "automated": true
+    },
+    {
+      "id": "I-04",
+      "category": "disclosure",
+      "missing": "没有服务条款或法律声明",
+      "markets": [
+        "GLOBAL"
+      ],
+      "level": "recommended",
+      "condition": null,
+      "check": "auto",
+      "status": "pass",
+      "evidence": [
+        "页脚链接「Terms and conditions」→ https://www.gov.uk/help/terms-conditions（HTTP 200）"
+      ],
+      "note": "",
+      "automated": true
+    }
+  ],
+  "discovered": {
+    "keyPages": {
+      "privacy": {
+        "href": "https://www.gov.uk/help/privacy-notice",
+        "url": "https://www.gov.uk/help/privacy-notice",
+        "status": 200,
+        "linkText": "Privacy",
+        "error": null
+      },
+      "cookie": {
+        "href": "https://www.gov.uk/help/cookies",
+        "url": "https://www.gov.uk/help/cookies",
+        "status": 200,
+        "linkText": "Cookies",
+        "error": null
+      },
+      "terms": {
+        "href": "https://www.gov.uk/help/terms-conditions",
+        "url": "https://www.gov.uk/help/terms-conditions",
+        "status": 200,
+        "linkText": "Terms and conditions",
+        "error": null
+      },
+      "accessibility": {
+        "href": "https://www.gov.uk/help/accessibility-statement",
+        "url": "https://www.gov.uk/help/accessibility-statement",
+        "status": 200,
+        "linkText": "Accessibility statement",
+        "error": null
+      },
+      "contact": {
+        "href": "https://www.gov.uk/contact",
+        "url": "https://www.gov.uk/contact",
+        "status": 200,
+        "linkText": "Contact",
+        "error": null
+      }
+    },
+    "thirdPartyHosts": [],
+    "banner": {
+      "text": "Cookies on GOV.UK We use some essential cookies to make this website work. We’d like to set additional cookies to understand how you use GOV.UK, remember your settings and improve government services. We also use cookies set by other sites to help us deliver content from their services. Accept additional cookies Reject additional cookies View cookies",
+      "buttons": [
+        {
+          "text": "Accept additional cookies",
+          "kind": "accept"
+        },
+        {
+          "text": "Reject additional cookies",
+          "kind": "reject"
+        },
+        {
+          "text": "View cookies",
+          "kind": "other"
+        }
+      ],
+      "frameUrl": null
+    },
+    "reject": {
+      "attempted": true,
+      "clicked": "Reject additional cookies",
+      "innerPage": "https://www.gov.uk/browse",
+      "reason": null
+    },
+    "axe": {
+      "violations": [],
+      "passes": 31,
+      "incomplete": 0
+    }
+  },
+  "phaseErrors": {},
+  "disclaimer": "本报告由自动扫描生成，不构成法律意见；自动检查只能覆盖一部分要求，正式上线前请咨询专业律师。"
+}

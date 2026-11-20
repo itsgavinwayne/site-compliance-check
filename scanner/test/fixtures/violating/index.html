@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Violating fixture</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TEST"></script>
+<script src="https://connect.facebook.net/en_US/fbevents.js"></script>
+<script>document.cookie = '_ga=GA1.1.1.1; path=/'; document.cookie = '_fbp=fb.1.1.1; path=/';</script>
+<style>
+  #cc { position: fixed; bottom: 0; left: 0; right: 0; background: #eee; padding: 12px; }
+  .low { color: #bbb; background: #fff; }
+</style>
+</head>
+<body>
+<h1>Violating site</h1>
+<img src="/logo.png">
+<p class="low">Low contrast text that is hard to read.</p>
+<iframe src="https://www.youtube.com/embed/xyz" width="320" height="180"></iframe>
+<p><a href="about.html">About</a></p>
+<form action="/submit">
+  <input type="email" name="email" placeholder="Your email">
+  <input type="checkbox" name="newsletter" checked> Subscribe to our newsletter and offers
+  <button type="submit">Send</button>
+</form>
+<footer>
+  <a href="missing-privacy.html">Privacy</a>
+  <p>京ICP备87654321号</p>
+</footer>
+<div id="cc">We use cookies to give you the best experience. <button onclick="document.getElementById('cc').remove()">Accept</button></div>
+</body>
+</html>

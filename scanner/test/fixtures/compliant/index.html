@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><title>Compliant fixture</title>
+<style>
+  body { font-family: sans-serif; color: #111; background: #fff; margin: 0; }
+  main, footer { padding: 16px; }
+  #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 2px solid #111; padding: 16px; }
+  #cookie-banner button { font-size: 16px; padding: 8px 16px; margin-right: 8px; background: #111; color: #fff; border: 0; }
+  #prefs { display: none; margin-top: 8px; }
+  a { color: #0645ad; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Compliant Widgets</h1>
+  <p>We make widgets. <a href="about.html">About us</a></p>
+  <form id="signup" action="/submit" method="post">
+    <label for="email">Email</label> <input id="email" type="email" name="email">
+    <input id="nl" type="checkbox" name="newsletter"> <label for="nl">Send me the newsletter</label>
+    <button type="submit">Sign up</button>
+    <p>See our <a href="privacy.html">privacy policy</a>.</p>
+  </form>
+</main>
+<footer>
+  <a href="privacy.html">Privacy Policy</a> ·
+  <a href="cookies.html">Cookie Policy</a> ·
+  <a href="impressum.html">Impressum</a> ·
+  <a href="terms.html">Terms of Use</a> ·
+  <a href="accessibility.html">Accessibility Statement</a> ·
+  <a href="privacy.html#ccpa">Do Not Sell or Share My Personal Information</a> ·
+  <a href="#" onclick="showPreferences(); return false;">Cookie settings</a>
+  <p>Compliant Widgets GmbH · Musterstraße 1, 10115 Berlin · info@widgets.test · Amtsgericht Berlin HRB 12345 · USt-IdNr. DE123456789</p>
+  <p><a href="https://beian.miit.gov.cn/">京ICP备12345678号-1</a> · <a href="https://beian.mps.gov.cn/#/query/webSearch?code=11010502030000">京公网安备11010502030000号</a></p>
+</footer>
+<div id="cookie-banner" role="dialog" aria-label="Cookie consent" hidden>
+  <p>We use cookies for analytics only with your consent. Read our <a href="cookies.html">cookie policy</a>.</p>
+  <button id="accept" onclick="decide('accepted')">Accept all</button>
+  <button id="reject" onclick="decide('rejected')">Reject all</button>
+  <button id="settings" onclick="document.getElementById('prefs').style.display='block'">Customize</button>
+  <div id="prefs">
+    <input type="checkbox" id="c-nec" checked disabled> <label for="c-nec">Strictly necessary</label>
+    <input type="checkbox" id="c-ana"> <label for="c-ana">Analytics</label>
+    <input type="checkbox" id="c-ads"> <label for="c-ads">Marketing</label>
+    <button onclick="decide('custom')">Save choices</button>
+  </div>
+</div>
+<script>
+  function consent() { return (document.cookie.match(/(?:^|; )consent=([^;]+)/) || [])[1]; }
+  function decide(v) { document.cookie = 'consent=' + v + '; path=/'; document.getElementById('cookie-banner').hidden = true; if (v === 'accepted') loadTrackers(); }
+  function showPreferences() { document.getElementById('cookie-banner').hidden = false; }
+  function loadTrackers() { var s = document.createElement('script'); s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TEST'; document.head.appendChild(s); document.cookie = '_ga=GA1.1.1.1; path=/'; }
+  if (!consent()) document.getElementById('cookie-banner').hidden = false;
+  else if (consent() === 'accepted') loadTrackers();
+</script>
+</body>
+</html>

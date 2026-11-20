@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Prechecked</title>
+<style>#cmp { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 16px; border-bottom: 1px solid #000; } #layer2 { display: none; }</style>
+</head><body><main><h1>Prechecked</h1><p><a href="about.html">About</a></p></main>
+<div id="cmp" role="dialog" aria-label="Privacy" hidden>
+  <p>We and our partners use cookies and similar tracking technologies.</p>
+  <button onclick="decide('accepted')">Accept</button>
+  <button onclick="decide('rejected')">Decline</button>
+  <button onclick="document.getElementById('layer2').style.display='block'">Manage preferences</button>
+  <div id="layer2">
+    <label><input type="checkbox" checked> Analytics</label>
+    <label><input type="checkbox" checked> Advertising</label>
+  </div>
+</div>
+<script>
+  function consent() { return (document.cookie.match(/(?:^|; )consent=([^;]+)/) || [])[1]; }
+  function track() { var s = document.createElement('script'); s.src = 'https://www.google-analytics.com/analytics.js'; document.head.appendChild(s); }
+  function decide(v) { document.cookie = 'consent=' + v + '; path=/'; document.getElementById('cmp').hidden = true; }
+  if (!consent()) document.getElementById('cmp').hidden = false; else track(); // 无论选什么都加载 → 违规
+</script>
+</body></html>
