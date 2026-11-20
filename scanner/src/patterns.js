@@ -50,6 +50,11 @@ export const BUTTON = {
 // 横幅文字启发式
 export const CONSENT_TEXT = /cookie|consent|gdpr|tracking|datenschutz|einwilligung|同意|隐私|隱私|confidentialit|consentement|consentimiento|consenso|toestemming|consentimento|traceurs|rastreo|tracciamento/i;
 
+// 横幅识别不到时，用来判断"页面上是否有 Cookie 告知文字"（→ manual 而非 na）。
+// 比 CONSENT_TEXT 严格：不含"隐私 / datenschutz / confidentialité"等几乎每个页脚都有的隐私政策链接词，
+// 也不含单独的"同意 / consent"（表单同意勾选框常见）；并且只看链接以外的文字（见 extract.js）。
+export const AMBIENT_CONSENT_TEXT = /cookie|クッキー|\bgdpr\b|einwilligung|consentement|consentimiento|toestemming|consentimento|traceurs|tracciamento/i;
+
 // F-02 营销/订阅类复选框
 export const MARKETING = /newsletter|marketing|promotion|promotional|offers|updates|subscribe|news|mailing|newsletter|werbung|angebote|abonnieren|营销|推广|订阅|訂閱|优惠|推送|offres|actualit[ée]s|ofertas|promociones|suscrib|offerte|promozion|iscriv|aanbiedingen|nieuwsbrief|novidades|promo[çc][õo]es|inscrever/i;
 
@@ -64,7 +69,7 @@ export const DISCLOSURE = {
   company: /\b[\p{Lu}][\p{L}0-9&.,' -]{1,60}?\s(GmbH|AG|UG|KG|OHG|e\.K\.|SE|Ltd\.?|Limited|LLP|PLC|plc|Inc\.?|LLC|Corp\.?|S\.?A\.?S?|SARL|S\.?r\.?l\.?|S\.?L\.?|B\.?V\.?|N\.?V\.?|Lda\.?|S\.?p\.?A\.?|Oy|AB|ApS|A\/S)\b|[一-龥]{2,30}(有限公司|股份有限公司|有限责任公司)/u,
   email: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i,
   // 街道+门牌号 / 行首或逗号后的"邮编 城市"（排除年份）/ 英国邮编 / 中文地址
-  address: /[\p{L}-]*(stra[ßs]e|str\.|weg|platz|gasse|allee|damm)\s*\d+|\d+[a-z]?,?\s+[\p{L}' ]{2,30}\s([Ss]treet|[Rr]oad|[Aa]venue|[Ll]ane|[Dd]rive|[Ss]quare)\b|\b([Rr]ue|[Cc]alle|[Aa]venida|[Vv]ia|[Vv]iale|[Rr]ua|[Ss]traat|[Ll]aan)\s+[\p{L}' ]{2,30}\s?\d+|(^|[,·|]\s*)(?!(19|20)\d{2}\b)\d{4,5}\s[\p{Lu}][\p{Ll}]+|\b[A-Z]{1,2}\d[A-Z\d]?\s\d[A-Z]{2}\b|[一-龥]{2,}(省|市)[一-龥]{1,20}(区|县|路|街)[一-龥\d]{0,20}号?/mu,
+  address: /[\p{L}-]*(stra[ßs]e|str\.|weg|platz|gasse|allee|damm)\s*\d+|\d+[a-z]?,?\s+[\p{L}' ]{2,30}\s([Ss]treet|[Rr]oad|[Aa]venue|[Ll]ane|[Dd]rive|[Ss]quare)\b|\b([Rr]ue|[Cc]alle|[Aa]venida|[Vv]ia|[Vv]iale|[Rr]ua|[Ss]traat|[Ll]aan)\s+[\p{L}' ]{2,30}\s?\d+|(^|[,·|]\s*)(?!(19|20)\d{2}\b)\d{4,5}\s[\p{Lu}][\p{Ll}]+|\b[A-Z]{1,2}\d[A-Z\d]?\s\d[A-Z]{2}\b|[一-龥]{2,}(省|市)[一-龥]{1,20}(区|县|路|街)[一-龥\d]{0,20}号?|\b([Rr]oom|[Ss]uite|[Uu]nit|[Ff]loor|[Ff]lat|[Bb]lock|[Bb]uilding)\s+[A-Z]?\d+[A-Z]?\b[^\n]{0,80}?,\s*[\p{Lu}][\p{L}' -]{2,40}/mu,
   registration: /(handelsregister|registergericht|amtsgericht|\bHR[AB]\s?\d+|company (no\.?|number|registration)|registered in england|companies house|registration (no\.?|number)|\bRCS\b|\bSIRE[NT]\b|\bKvK\b|registro (mercantil|delle imprese)|\bCIF\b|\bNIF\b|统一社会信用代码|registered number|reg\.? no)/i,
   vat: /(USt-?IdNr|Umsatzsteuer-?Identifikationsnummer|\bVAT\b|TVA|\bIVA\b|\bBTW\b|P\.?\s?IVA|\b(DE|AT|FR|NL|IT|ES|BE|IE|GB)\s?[0-9A-Z]{8,12}\b)/,
   registeredAddress: /registered (office|address)|eingetragener sitz|sitz der gesellschaft|siège social|注册地址/i,
@@ -73,3 +78,9 @@ export const DISCLOSURE = {
 // 中国备案
 export const ICP = /[一-龥]ICP[备證证]\s*\d{6,}\s*号(\s*-\s*\d+)?|[一-龥]ICP[备證证]\s*\d{6,}/;
 export const GONGAN = /[一-龥]公网安备\s*\d{10,}\s*号?/;
+
+// F-01 / F-02 额外抓取的"可能有表单"的同站页面（联系页之外）：合作申请、询价、试用、订阅等
+export const FORM_PAGE = {
+  text: /\b(partners?|partner programme|reseller|distributor|quote|quotation|inquiry|enquiry|inquire|enquire|request|demo|trial|apply|application|sign ?up|register|subscribe|newsletter|oem|odm|anfrage|angebot|registrieren|devis|inscription|presupuesto|solicitud|preventivo|richiesta|offerte|aanvraag|or[çc]amento)\b|询价|咨询|合作|申请|留言|订阅|报价|试用|注册/i,
+  href: /(^|[/_.-])(partners?|reseller|distributor|quote|inquiry|enquiry|request|demo|trial|apply|signup|sign-up|register|subscribe|newsletter|oem|odm|oem-odm|anfrage|devis|presupuesto|preventivo|offerte|orcamento)([/_.-]|$)/i,
+};

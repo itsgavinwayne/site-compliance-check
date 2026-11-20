@@ -5,9 +5,10 @@ const LABEL = { company: '公司名', address: '地址', email: '邮箱', regist
 export function disclosureCheck(ctx, needed) {
   const home = requireHome(ctx);
   const sources = [];
-  for (const k of ['impressum', 'terms']) {
+  const NAME = { impressum: 'Impressum/法律声明', terms: '条款', contact: '联系' };
+  for (const k of ['impressum', 'terms', 'contact']) {
     const p = ctx.keyPages && ctx.keyPages[k];
-    if (p && !p.error && p.status < 400) sources.push([`${k === 'impressum' ? 'Impressum/法律声明' : '条款'}页`, p.text]);
+    if (p && !p.error && p.status < 400) sources.push([`${NAME[k]}页`, p.text]);
   }
   sources.push(['页脚', home.footerText], ['首页', home.bodyText]);
   const found = {};

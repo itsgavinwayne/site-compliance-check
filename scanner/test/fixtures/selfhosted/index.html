@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>示例小部件</title>
+<script>
+  // 虚构的自建统计：无 Cookie、无本地存储，用 sendBeacon 上报到清单外的端点
+  window.addEventListener('load', function () {
+    var body = JSON.stringify({ e: 'pageview', p: location.pathname });
+    if (navigator.sendBeacon) navigator.sendBeacon('/functions/v1/analytics-ingest', new Blob([body], { type: 'text/plain' }));
+  });
+</script>
+</head><body><main><h1>示例小部件</h1>
+<p>提交咨询即表示您同意我们回复您的询问。</p>
+</main>
+<footer>
+  <a href="contact.html">联系我们</a>
+  <a href="partners.html">合作申请</a>
+  <a href="privacy.html">隐私政策</a>
+</footer></body></html>
