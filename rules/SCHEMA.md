@@ -5,7 +5,7 @@
 | `id` | 是 | 唯一编号，如 `C-02`。发布后不复用、不改含义 |
 | `category` | 是 | `privacy-policy` / `cookies` / `forms` / `disclosure` / `china` / `accessibility` / `licensing` |
 | `missing` | 是 | "缺少什么"——报告里直接显示的那句话 |
-| `markets` | 是 | 受影响市场：`GLOBAL` `EU` `UK` `US` `CN` `DE` `AT`（可扩充，新增代码需同步本表） |
+| `markets` | 是 | 受影响市场：`GLOBAL` `EU` `UK` `US` `CN` `DE` `AT` `CH` `KR` `JP` `CA`（可扩充，新增代码需同步本表和 PLAN.md §3.1） |
 | `level` | 是 | `must` / `conditional` / `recommended` |
 | `condition` | level=conditional 时必填 | 何种情况下变为必须 |
 | `check` | 是 | `auto` / `hybrid` / `manual` |
