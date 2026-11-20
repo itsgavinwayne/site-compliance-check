@@ -1,23 +1,107 @@
-# site-compliance-check
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
+    <img src="docs/assets/banner-light.svg" alt="site-compliance-check report: each line shows what is missing, which markets it affects, and how serious it is" width="100%">
+  </picture>
+</p>
 
-网站上线前**合规**检查：给一个网址，列出缺了什么、会在哪些市场有问题、是什么级别。
+<p align="center">
+  <a href="https://github.com/itsgavinwayne/site-compliance-check/releases"><img src="https://img.shields.io/github/v/release/itsgavinwayne/site-compliance-check?color=1F3A5F" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-1F3A5F" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/node-%E2%89%A520-1F3A5F" alt="Node 20+">
+  <img src="https://img.shields.io/badge/Claude%20Code-skill-1F3A5F" alt="Claude Code skill">
+</p>
 
-> ❌ **C-02** 同意前加载了 `_ga`、`_fbp` → 影响 EU UK ｜ 必须
+<p align="center"><b>English</b> | <a href="README.zh-CN.md">简体中文</a></p>
 
-## 功能
+Give it a URL. It tells you what the site is missing for privacy, consent, business-disclosure and accessibility rules, which markets each gap affects, and how serious it is. You don't declare a target market first: every finding names the markets it affects, so the reader decides what applies. It checks compliance only — not SEO, performance, security, or how to implement fixes.
 
-- **只查合规**：隐私政策、Cookie 同意与追踪、GPC、表单与营销、公示信息（Impressum 等）、中国大陆备案、无障碍、素材授权。不涉及 SEO、性能、安全配置，也不给实现方案。
-- **不用先选市场**：每条结果直接标出受影响的市场（`EU` `UK` `US` `CN` `DE` `AT` `CH` `KR` `JP` `CA` `GLOBAL`），看报告的人按自己的目标市场取舍。
-- **自动 + 人工**：扫描器自动判定能判定的部分（同意前/拒绝后/带 GPC 三种状态下的 Cookie 与请求、关键链接、备案号、axe 无障碍规则等）；只能人工确认的项列成清单。
-- **Claude Code skill**：一句"查一下 xx 合规"，跑扫描、解读结果、逐项引导人工确认，汇总成最终报告。
+## Install with one prompt
 
-规则共 37 条，唯一来源是 [rules/registry.yaml](rules/registry.yaml)（字段见 [rules/SCHEMA.md](rules/SCHEMA.md)），每条附官方法规出处和核实日期。
+Paste this into Claude Code. Claude clones the repo, installs dependencies (Node 20+ required), and links the skill.
 
-## 快速开始
+```text
+Install the site-compliance-check skill for me:
+1. Clone https://github.com/itsgavinwayne/site-compliance-check
+   into ~/.claude/site-compliance-check (git pull if it exists).
+2. In its scanner/ folder, run `npm install`
+   and `npx playwright install chromium`.
+3. Symlink ~/.claude/site-compliance-check/skill/site-compliance-check
+   to ~/.claude/skills/site-compliance-check.
+Tell me when it's ready.
+```
 
-需要 Node.js 20 及以上。
+### Then ask
 
-### 1. 安装
+Start a new Claude Code session and say one of these:
+
+- `Run a compliance check on https://example.com`
+- `Is example.com GDPR and cookie compliant?`
+- `查一下 https://example.com 的合规`
+
+The skill runs the scanner, explains failures from Must to Conditional to Recommended with the markets they affect, and walks you through the items that need a human to confirm. It writes `reports/<host>-<date>/final.md`, where each line says whether the conclusion came from the scanner, from your confirmation, or is still unconfirmed. Reports stay local (`reports/` is git-ignored).
+
+To update, ask Claude to "update the site-compliance-check skill" (it runs `git pull` in `~/.claude/site-compliance-check`).
+
+## What a report looks like
+
+Reports are currently written in Chinese. The sample keeps the original output.
+
+```text
+- 结果：❌ 不通过 7 ｜ 🔍 需人工 19 ｜ ⚠️ 出错 0 ｜ ✅ 通过 8 ｜ ➖ 不适用 3
+✅ C-02 通过：同意前未发现已知追踪 Cookie 或请求（共 16 个请求、1 个 Cookie） → 影响 EU UK ｜ 必须
+✅ C-03 通过：横幅按钮：Accept additional cookies[accept]、Reject additional cookies[reject] → 影响 EU UK ｜ 必须
+❌ C-09 没有 "Do Not Sell or Share My Personal Information" 链接 → 影响 US ｜ 视情况（适用条件：达到加州等州隐私法的营收或数据量门槛）
+❌ I-03 没有 Impressum（运营者信息页） → 影响 DE AT ｜ 视情况（适用条件：运营方在德国/奥地利设立，或面向德奥用户提供商业性数字服务）
+```
+
+Full sample reports for a public site: [www.gov.uk report](examples/www.gov.uk/report.md) and [example.com report](examples/example.com/report.md).
+
+| Status | Meaning |
+|---|---|
+| ✅ | Pass |
+| ❌ | Fail |
+| 🔍 | Needs human confirmation |
+| ⚠️ | Check errored (never counted as a pass) |
+| ➖ | Not applicable |
+
+## What it checks
+
+37 rules in [rules/registry.yaml](rules/registry.yaml), each with an official legal source and a verification date, split into 14 automatic checks, 8 scanner signals for human confirmation, and 15 manual checklist items; levels are 21 Must, 13 Conditional (each states its condition), and 3 Recommended.
+
+| Category | Rules | GLOBAL | EU | UK | US | CN | DE | AT | CH | KR | JP | CA |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Privacy policy | 10 | 2 | 6 | 6 | 3 | 6 | | | 2 | 5 | | 2 |
+| Cookies and tracking | 11 | | 8 | 8 | 2 | | | | | | 1 | |
+| Forms and marketing | 5 | 2 | 3 | 3 | 1 | 2 | | | | 1 | | |
+| Business disclosure (Impressum etc.) | 4 | 1 | 1 | 1 | | | 1 | 1 | | | | |
+| China (ICP / PSB filing, PIPL) | 4 | | | | | 4 | | | | | | |
+| Accessibility | 2 | | 2 | | 1 | | | | | | | |
+| Asset licensing | 1 | 1 | | | | | | | | | | |
+
+See [docs/checklist.md](docs/checklist.md) for a printable checklist generated from the registry, and [docs/rules/](docs/rules/README.md) for per-category rationale and sources.
+
+## How it works
+
+```mermaid
+flowchart LR
+    Url["URL"] --> Browser["Fresh browser (Playwright)"]
+    Browser --> Before["Before any click"]
+    Browser --> Reject["After clicking Reject (reload + inner page)"]
+    Browser --> GPC["With GPC signal"]
+    Browser --> Pages["Key pages found: privacy, cookies, Impressum, terms, accessibility, contact"]
+    Before --> Checks["22 automatic / signal checks"]
+    Reject --> Checks
+    GPC --> Checks
+    Pages --> Checks
+    Checks --> Reports["report.md + report.json"]
+    Reports --> Human["Skill: human confirmation"]
+    Human --> Final["final.md"]
+```
+
+## Use the scanner directly
+
+Requires Node 20+.
 
 ```bash
 git clone https://github.com/itsgavinwayne/site-compliance-check.git
@@ -35,69 +119,45 @@ npm install
 npx playwright install chromium
 ```
 
-### 2. 运行扫描
-
-在 `scanner/` 目录下：
-
 ```bash
 node bin/scc.js https://example.com --out ../reports/example.com
 ```
 
-会写出 `reports/example.com/report.md`、`report.json` 和 `screenshots/`，同时把 Markdown 报告打印到标准输出。其他参数（`--json`、`--timeout`、`--settle`、`--no-axe`）见 [scanner/README.md](scanner/README.md)。
+Options:
 
-`reports/` 已在 `.gitignore` 中，真实站点的报告不要提交。
+| Option | Description |
+|---|---|
+| `--out <dir>` | Write report.md, report.json, and screenshots. |
+| `--json` | Print JSON to stdout. |
+| `--timeout <ms>` | Page timeout. Raise it for slow or far-away sites. |
+| `--settle <ms>` | Extra wait after network idle. |
+| `--no-axe` | Skip the axe accessibility scan. A-01 then shows as errored, not passed. |
 
-### 3. 使用 Claude Code skill
+To install the skill by hand instead of with a prompt, see [skill/README.md](skill/README.md).
 
-在仓库根目录把 skill 链接到个人 skill 目录：
+## Limitations
 
-```bash
-mkdir -p ~/.claude/skills && ln -s "$(pwd)/skill/site-compliance-check" ~/.claude/skills/site-compliance-check
-```
+- Automation covers only part of the requirements; axe finds only part of WCAG issues.
+- Scans the home page plus discovered key pages, not the whole site.
+- Recognizes trackers from a known list in `scanner/src/trackers.js`.
+- Custom cookie banners may not be detected and are marked for human confirmation.
+- Results reflect the network you scan from: geo-targeted banners can differ, and slow mainland-China sites can time out and show as errored.
+- Some legal sources are still awaiting manual verification. See [docs/rules/README.md](docs/rules/README.md).
 
-然后在 Claude Code 里说"查一下 https://example.com 的合规"。Skill 会在第一次运行时安装依赖，把报告写到 `reports/<host>-<日期>/`，引导你确认人工项，最后生成 `final.md`，每条标明结论来源（自动 / 人工确认 / 未确认）。也可以作为项目 skill 使用，见 [skill/README.md](skill/README.md)。
+## Contributing
 
-## 报告示例
-
-[examples/](examples/) 里是用公开网站试跑的输出：
-
-- [examples/example.com/report.md](examples/example.com/report.md)：几乎没有内容的示例域名，展示"缺什么"的样子；
-- [examples/www.gov.uk/report.md](examples/www.gov.uk/report.md)：有标准接受/拒绝 Cookie 横幅的网站。
-
-报告按"必须 → 视情况 → 建议"排序，每条一行；只能人工确认的项单独列出。
-
-## 规则与人工清单
-
-- [docs/checklist.md](docs/checklist.md)：可勾选的人工检查清单，含判定方法和主要出处，由登记表生成；
-- [docs/rules/](docs/rules/README.md)：按分类整理的规则依据文档；
-- [rules/registry.yaml](rules/registry.yaml)：规则登记表。
-
-改了登记表后重新生成清单，并校验两者一致（不一致时退出码为 1，可接入 CI）：
+Rules live in [rules/registry.yaml](rules/registry.yaml) (fields in [rules/SCHEMA.md](rules/SCHEMA.md)); after editing, run the commands below. Every rule needs an official source and a verification date.
 
 ```bash
 node scripts/gen-checklist.js
 ```
 
 ```bash
-node scripts/gen-checklist.js --check
+cd scanner && npm test
 ```
 
-在仓库根目录执行，需先在 `scanner/` 下 `npm install`（脚本复用其 `yaml` 依赖）。也可在 `scanner/` 下用 `npm run checklist` / `npm run checklist:check`。
+## Disclaimer and license
 
-## 局限
+This tool is not legal advice and does not guarantee compliance. Results reflect the site at scan time and the rules in the registry. Consult a lawyer before launch.
 
-- 自动检查只覆盖一部分要求。隐私政策内容是否完整、同意记录、素材授权等只能人工确认；hybrid 类规则扫描器只给信号，不会判"通过"。
-- 只扫首页和自动发现的关键页（隐私政策、Cookie 政策、Impressum、条款、无障碍声明、联系页），不会遍历全站；其他页面的表单、嵌入需人工检查。
-- 追踪器和第三方嵌入按已知域名与 Cookie 名清单识别（`scanner/src/trackers.js`），未收录的工具识别不到。
-- Cookie 横幅靠已知 CMP 选择器和启发式识别，自制横幅可能识别不到，此时相关项为"需人工确认"。
-- axe-core 只能发现部分 WCAG 问题，键盘操作、读屏等需人工审查。
-- 扫描从你所在的网络发起；按地区展示不同横幅的网站，结果可能和目标市场用户看到的不同。国内站从境外访问可能超时（记为"出错"，不会当作通过）。
-- 法规会变化。每条依据都有核实日期，部分条目标了"待核实"（见 [docs/rules/README.md](docs/rules/README.md)），需要定期复核。
-
-## 免责声明
-
-本项目及其报告不构成法律意见，也不保证网站合规。检查结论只反映扫描当时的状态和登记表收录的规则。正式上线前请咨询专业律师。
-
-## License
-
-MIT
+License: MIT. See [LICENSE](LICENSE).
