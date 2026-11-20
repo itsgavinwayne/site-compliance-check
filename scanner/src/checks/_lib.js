@@ -1,5 +1,5 @@
 // 检查函数共用工具。缺数据时一律抛错（由 runner 转为 status=error），绝不默认 pass。
-import { trackerSignals, cmpSignals } from '../trackers.js';
+import { trackerSignals, cmpSignals, analyticsLikeSignals } from '../trackers.js';
 
 export const pass = (evidence = [], note = '') => ({ status: 'pass', evidence, note });
 export const fail = (evidence = [], note = '') => ({ status: 'fail', evidence, note });
@@ -51,7 +51,9 @@ export function noBanner(ctx) {
   return na([], '未发现 Cookie 横幅，见 C-01');
 }
 
-export { trackerSignals, cmpSignals };
+export { trackerSignals, cmpSignals, analyticsLikeSignals };
+
+export const describeAnalyticsLike = (list) => `清单外的疑似统计上报：${list.slice(0, 5).map((x) => `${x.host}${x.path}（${x.type}）`).join('、')}`;
 
 export function describeTrackers(sig) {
   const out = [];
@@ -64,5 +66,6 @@ export function allForms(ctx) {
   const forms = (ctx.home.forms || []).map((f) => ({ ...f, page: '首页' }));
   const contact = ctx.keyPages && ctx.keyPages.contact;
   if (contact && contact.forms) forms.push(...contact.forms.map((f) => ({ ...f, page: `联系页 ${contact.url || contact.href}` })));
+  for (const p of ctx.formPages || []) forms.push(...(p.forms || []).map((f) => ({ ...f, page: `${p.url} ` })));
   return forms;
 }

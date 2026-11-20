@@ -1,6 +1,6 @@
 // 在浏览器页面内执行的 DOM 提取函数（通过 page.evaluate / frame.evaluate 注入）。
 // 注意：本函数会被序列化后在页面中运行，不能引用外部变量；正则以 [source, flags] 传入。
-import { KEY_PAGES, BUTTON, CONSENT_TEXT, CONSENT_REOPEN_TEXT, CONSENT_REOPEN_CODE, MARKETING, PI_FIELD_NAME, DO_NOT_SELL } from './patterns.js';
+import { KEY_PAGES, BUTTON, CONSENT_TEXT, AMBIENT_CONSENT_TEXT, CONSENT_REOPEN_TEXT, CONSENT_REOPEN_CODE, MARKETING, PI_FIELD_NAME, DO_NOT_SELL } from './patterns.js';
 
 const rx = (r) => [r.source, r.flags];
 
@@ -9,6 +9,7 @@ export const PATTERN_ARGS = {
   accept: rx(BUTTON.accept),
   settings: rx(BUTTON.settings),
   consentText: rx(CONSENT_TEXT),
+  ambientConsent: rx(AMBIENT_CONSENT_TEXT),
   reopenText: rx(CONSENT_REOPEN_TEXT),
   reopenCode: rx(CONSENT_REOPEN_CODE),
   marketing: rx(MARKETING),
@@ -186,6 +187,17 @@ export function extractInPage(P) {
   const footerEls = all.filter((e) => e.tagName === 'FOOTER' || e.getAttribute('role') === 'contentinfo');
   const alternates = [...document.querySelectorAll('link[rel=alternate][hreflang]')].map((l) => ({ hreflang: l.getAttribute('hreflang'), href: l.href }));
   const bodyText = norm(document.body ? document.body.innerText : '').slice(0, 200000);
+  // 链接以外的可见文字：页脚"隐私政策 / Cookie Policy"等链接文字不算 Cookie 告知
+  const nonLinkText = [];
+  if (document.body) {
+    const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = tw.nextNode(); n && nonLinkText.length < 20000; n = tw.nextNode()) {
+      const p = n.parentElement;
+      if (!p || p.closest('a, script, style, noscript, template') || !visible(p)) continue;
+      const t = norm(n.nodeValue);
+      if (t) nonLinkText.push(t);
+    }
+  }
   return {
     url: location.href,
     title: document.title,
@@ -194,7 +206,7 @@ export function extractInPage(P) {
     bodyText,
     footerText: footerEls.map(textOf).join(' \n ').slice(0, 20000),
     footerHtmlLinks: footerEls.flatMap((f) => [...f.querySelectorAll('a[href]')].map((a) => a.href)).slice(0, 500),
-    hasConsentText: R.consentText.test(bodyText),
+    hasConsentText: R.ambientConsent.test(nonLinkText.join(' ')),
     banner,
     bannerCandidates: candidates.length,
     links,

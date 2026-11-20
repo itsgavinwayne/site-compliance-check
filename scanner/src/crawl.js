@@ -6,7 +6,7 @@ import { mkdir, mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { extractInPage, PATTERN_ARGS } from './extract.js';
-import { KEY_PAGES, normalize } from './patterns.js';
+import { KEY_PAGES, FORM_PAGE, normalize } from './patterns.js';
 
 
 export const DEFAULTS = {
@@ -136,6 +136,28 @@ async function fetchKeyPage(context, link, o) {
   }
 }
 
+/** 联系页之外、可能有收集个人信息表单的同站页面（合作申请/询价/订阅等），最多 max 个 */
+export function findFormPages(links, baseUrl, exclude = new Set(), max = 3) {
+  let base;
+  try { base = new URL(baseUrl); } catch { return []; }
+  const out = [];
+  const seen = new Set();
+  for (const l of links) {
+    if (!l.href || l.inBanner) continue;
+    let u;
+    try { u = new URL(l.href); } catch { continue; }
+    if (u.origin !== base.origin || /\.(pdf|zip|jpe?g|png|svg|xml|webp)$/i.test(u.pathname)) continue;
+    u.hash = '';
+    const key = u.href;
+    if (seen.has(key) || exclude.has(key) || u.pathname === base.pathname) continue;
+    if (!FORM_PAGE.text.test(normalize(l.text)) && !FORM_PAGE.href.test(u.pathname)) continue;
+    seen.add(key);
+    out.push({ text: l.text, href: key, inFooter: l.inFooter });
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
 function pickInnerPage(home, baseUrl) {
   let base;
   try { base = new URL(baseUrl); } catch { return null; }
@@ -184,6 +206,14 @@ async function stateBefore(browser, url, o, ctx) {
     for (const [kind, link] of Object.entries(best)) {
       if (!fetched.has(link.href)) fetched.set(link.href, await fetchKeyPage(context, link, o));
       ctx.keyPages[kind] = fetched.get(link.href);
+    }
+    // F-01/F-02：联系页之外，再看几个可能有表单的页面
+    const strip = (h) => { try { const u = new URL(h); u.hash = ''; return u.href; } catch { return h; } };
+    const done = new Set([...fetched.keys()].map(strip));
+    ctx.formPages = [];
+    for (const link of findFormPages(home.links, page.url(), done)) {
+      const p = await fetchKeyPage(context, link, o);
+      ctx.formPages.push({ url: p.url || link.href, forms: p.forms || [], error: p.error || null });
     }
   } finally {
     await context.close().catch(() => {});

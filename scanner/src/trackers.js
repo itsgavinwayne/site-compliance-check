@@ -212,3 +212,35 @@ export function cmpSignals(requests) {
   }
   return [...out];
 }
+
+/**
+ * 清单之外、路径看起来像统计/埋点上报的请求（如自建统计 /functions/v1/analytics-ingest、/api/track、/collect）。
+ * 只用于把"未发现追踪"降级为需人工确认，不据此判 fail：自建、无 Cookie 的统计是否需要同意取决于具体做法。
+ * 只看 fetch/xhr/ping(sendBeacon)/image 请求；已被 TRACKER_HOSTS 识别的不重复列出。
+ */
+const ANALYTICS_PATH_WORD = /^(analytics|collect|track|tracking|tracker|pixel|beacon|telemetry|ingest|pageviews?|metrics|stats|statistics|event|matomo|piwik|umami)$/i;
+const ANALYTICS_TYPES = new Set(['fetch', 'xhr', 'ping', 'image']);
+export function classifyAnalyticsLike(req) {
+  if (!req || !ANALYTICS_TYPES.has(req.type) || classifyTracker(req.url)) return null;
+  let u;
+  try { u = new URL(req.url); } catch { return null; }
+  if (!/^https?:$/.test(u.protocol)) return null;
+  // 某一段路径（去掉扩展名）的每个词都是统计词才算：/analytics-ingest、/g/collect、/matomo.php 命中，/blog/tracking-numbers 不命中
+  for (const seg of u.pathname.split('/').filter(Boolean)) {
+    const words = seg.replace(/\.[a-z0-9]{1,5}$/i, '').split(/[._-]+/).filter(Boolean);
+    if (words.length && words.every((w) => ANALYTICS_PATH_WORD.test(w) || /^v\d+$/i.test(w)) && words.some((w) => ANALYTICS_PATH_WORD.test(w))) {
+      return { host: u.hostname, path: u.pathname.slice(0, 80), word: seg.toLowerCase(), type: req.type };
+    }
+  }
+  return null;
+}
+
+export function analyticsLikeSignals(state) {
+  const out = [];
+  const seen = new Set();
+  for (const r of (state && state.requests) || []) {
+    const m = classifyAnalyticsLike(r);
+    if (m && !seen.has(m.host + m.path)) { seen.add(m.host + m.path); out.push(m); }
+  }
+  return out;
+}

@@ -49,6 +49,7 @@ export function buildJson(ctx, results, meta = {}) {
     results: sortResults(results),
     discovered: {
       keyPages: Object.fromEntries(Object.entries(ctx.keyPages || {}).map(([k, p]) => [k, { href: p.href, url: p.url || null, status: p.status ?? null, linkText: p.linkText, error: p.error || null }])),
+      formPages: (ctx.formPages || []).map((p) => ({ url: p.url, forms: p.forms.length, error: p.error || null })),
       thirdPartyHosts: thirdPartyHosts(ctx.states.before && ctx.states.before.requests, ctx.finalUrl || ctx.url),
       banner: ctx.home && ctx.home.banner ? { text: ctx.home.banner.text, buttons: ctx.home.banner.buttons.map(({ text, kind }) => ({ text, kind })), frameUrl: ctx.home.banner.frameUrl || null } : null,
       reject: ctx.states.reject ? { attempted: ctx.states.reject.attempted, clicked: ctx.states.reject.clicked, innerPage: ctx.states.reject.innerPage, reason: ctx.states.reject.reason || null } : null,
@@ -101,6 +102,8 @@ export function buildMarkdown(json) {
   out.push('## 采集信息', '');
   const kp = Object.entries(json.discovered.keyPages);
   out.push(`- 发现的关键页面：${kp.length ? kp.map(([k, p]) => `${k} → ${p.url || p.href}${p.status ? `（${p.status}）` : p.error ? '（打不开）' : ''}`).join('；') : '无'}`);
+  const fp = json.discovered.formPages || [];
+  if (fp.length) out.push(`- 另抽查的表单页（F-01/F-02）：${fp.map((p) => `${p.url}（${p.error ? '打不开' : `${p.forms} 个表单`}）`).join('；')}`);
   const b = json.discovered.banner;
   out.push(`- Cookie 横幅：${b ? `识别到，按钮 ${b.buttons.map((x) => `${x.text}[${x.kind}]`).join('、')}` : '未识别到'}`);
   const rj = json.discovered.reject;
