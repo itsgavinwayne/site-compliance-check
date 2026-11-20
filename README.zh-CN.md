@@ -21,7 +21,14 @@
 把下面这段提示词粘贴到 Claude Code；Claude 会克隆仓库、安装依赖（需要 Node 20+），并链接 skill。
 
 ```text
-帮我安装 site-compliance-check skill：把 https://github.com/itsgavinwayne/site-compliance-check 克隆到 ~/.claude/site-compliance-check（已存在就 git pull），在它的 scanner/ 目录里运行 npm install 和 npx playwright install chromium，然后把 ~/.claude/site-compliance-check/skill/site-compliance-check 软链接到 ~/.claude/skills/site-compliance-check。装好后告诉我。
+帮我安装 site-compliance-check skill：
+1. 把 https://github.com/itsgavinwayne/site-compliance-check
+   克隆到 ~/.claude/site-compliance-check（已存在就 git pull）
+2. 在它的 scanner/ 目录里运行 npm install
+   和 npx playwright install chromium
+3. 把 ~/.claude/site-compliance-check/skill/site-compliance-check
+   软链接到 ~/.claude/skills/site-compliance-check
+装好后告诉我。
 ```
 
 ### 然后问

@@ -21,7 +21,14 @@ Give it a URL. It tells you what the site is missing for privacy, consent, busin
 Paste this into Claude Code. Claude clones the repo, installs dependencies (Node 20+ required), and links the skill.
 
 ```text
-Install the site-compliance-check skill for me: clone https://github.com/itsgavinwayne/site-compliance-check into ~/.claude/site-compliance-check (git pull if it already exists), run `npm install` and `npx playwright install chromium` inside its scanner/ folder, then symlink ~/.claude/site-compliance-check/skill/site-compliance-check to ~/.claude/skills/site-compliance-check. Tell me when it's ready.
+Install the site-compliance-check skill for me:
+1. Clone https://github.com/itsgavinwayne/site-compliance-check
+   into ~/.claude/site-compliance-check (git pull if it exists).
+2. In its scanner/ folder, run `npm install`
+   and `npx playwright install chromium`.
+3. Symlink ~/.claude/site-compliance-check/skill/site-compliance-check
+   to ~/.claude/skills/site-compliance-check.
+Tell me when it's ready.
 ```
 
 ### Then ask

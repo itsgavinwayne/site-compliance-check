@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-label="site-compliance-check: a report lists what is missing, which markets it affects, and how serious it is">
-<rect width="1280" height="420" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="352" viewBox="0 24 1280 352" role="img" aria-label="site-compliance-check: a report lists what is missing, which markets it affects, and how serious it is">
+<rect y="24" width="1280" height="352" fill="#FFFFFF"/>
 <text x="64" y="104" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="52" font-weight="700" fill="#101828" letter-spacing="-1">site-compliance-check</text>
 <text x="64" y="150" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="24" fill="#475467">Pre-launch website compliance check  /  网站上线前合规检查</text>
 <rect x="64" y="190" width="1152" height="182" rx="10" fill="#F5F7FA" stroke="#D0D5DD"/>
