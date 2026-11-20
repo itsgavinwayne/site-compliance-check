@@ -1,0 +1,67 @@
+# 合规检查报告
+
+- 网址：https://www.gov.uk（最终 https://www.gov.uk/）
+- 扫描时间：2026-11-20T04:15:21.402Z
+- 结果：❌ 不通过 7 ｜ 🔍 需人工 15 ｜ ⚠️ 出错 0 ｜ ✅ 通过 8 ｜ ➖ 不适用 3
+
+> 本报告由自动扫描生成，不构成法律意见；自动检查只能覆盖一部分要求，正式上线前请咨询专业律师。
+
+## 自动检查结果
+
+### 必须
+
+- ✅ P-01 通过：页脚链接「Privacy」→ https://www.gov.uk/help/privacy-notice（HTTP 200） → 影响 GLOBAL ｜ 必须
+- ❌ P-07 没有中文版隐私政策：隐私政策链接与页面中均未发现中文版本信号 → 影响 CN ｜ 必须
+- ✅ C-01 通过：识别到横幅：「Cookies on GOV.UK We use some essential cookies to make this website work. We’d …」；按钮：Accept additional cookies[accept]、Reject additional cookies[reject]、View cookies[other] → 影响 EU UK ｜ 必须
+- ✅ C-02 通过：同意前未发现已知追踪 Cookie 或请求（共 16 个请求、1 个 Cookie）；拒绝后（含刷新与内页 https://www.gov.uk/browse）也未发现（追踪清单见 src/trackers.js，未收录的工具不会被识别） → 影响 EU UK ｜ 必须
+- ✅ C-03 通过：横幅按钮：Accept additional cookies[accept]、Reject additional cookies[reject]、View cookies[other] → 影响 EU UK ｜ 必须
+- ✅ C-06 通过：页脚链接「Cookies」→ https://www.gov.uk/help/cookies（HTTP 200） → 影响 EU UK ｜ 必须
+- ✅ C-08 通过：同意前未请求已知第三方嵌入域名（共 16 个请求）（嵌入清单见 src/trackers.js） → 影响 EU ｜ 必须
+- ➖ F-01 不适用：首页与联系页未发现收集 email/电话的表单；其他页面的表单需人工确认 → 影响 GLOBAL ｜ 必须
+- ➖ F-02 不适用：未发现营销/订阅类复选框；"与提交捆绑"需人工确认 → 影响 EU UK ｜ 必须
+- ❌ I-01 缺少服务提供者信息（公司名、地址、邮箱、注册号、增值税号）：未发现公司名、地址、邮箱、注册号、增值税号 → 影响 EU ｜ 必须
+- ❌ I-02 缺少公司名称、注册号、注册地址：未发现公司名、注册号、地址 → 影响 UK ｜ 必须
+- ❌ I-03 没有 Impressum（运营者信息页）：首页未发现「Impressum」链接 → 影响 DE AT ｜ 必须
+- ❌ CN-01 页脚没有 ICP 备案号，或未链接到 beian.miit.gov.cn：首页未发现ICP 备案号文本 → 影响 CN ｜ 必须
+- ❌ CN-02 没有公安联网备案号：首页未发现公安联网备案号文本 → 影响 CN ｜ 必须
+
+### 视情况
+
+- ❌ C-09 没有 "Do Not Sell or Share My Personal Information" 链接：首页未发现 "Do Not Sell or Share" / "Your Privacy Choices" 类链接 → 影响 US ｜ 视情况
+- ➖ C-10 不适用：无 GPC 时也未发现追踪，无法比较；如追踪只在同意后加载，需人工在"同意后 + GPC"下确认 → 影响 US ｜ 视情况
+- ✅ A-02 通过：页脚链接「Accessibility statement」→ https://www.gov.uk/help/accessibility-statement（HTTP 200） → 影响 EU ｜ 视情况
+
+### 建议
+
+- ✅ I-04 通过：页脚链接「Terms and conditions」→ https://www.gov.uk/help/terms-conditions（HTTP 200） → 影响 GLOBAL ｜ 建议
+
+## 需人工确认
+
+### 扫描器已给出信号，需人工确认
+
+- 🔍 C-04 同意选项默认勾选，或不能按类别选择：横幅无分类开关，另有入口：「View cookies」；截图：screenshots/before.png（请人工确认该入口能按类别选择） → 影响 EU UK ｜ 必须
+- 🔍 C-05 同意后没有入口修改或撤回同意：入口：「change your cookie settings」（请人工确认点击后能修改或撤回同意） → 影响 EU UK ｜ 必须
+- 🔍 A-01 未达到 WCAG 2.1 AA：axe 首页未发现违规（通过 31 项，待人工 0 项）（自动规则只覆盖 WCAG 一部分，需人工审查键盘操作、读屏、对比度等） → 影响 EU US ｜ 视情况
+- 🔍 P-08 隐私政策没有更新日期：隐私政策页发现日期：「Last updated: 1 June 2025」（请人工确认这是隐私政策的更新/生效日期） → 影响 US EU ｜ 建议
+
+### 只能人工确认
+
+- [ ] P-02 隐私政策未说明收集哪些数据、用途、法律依据、保存期限 → 影响 EU UK CN ｜ 必须
+- [ ] P-03 未列出接收数据的第三方（统计、CRM、邮件服务等） → 影响 EU UK CN US ｜ 必须
+- [ ] P-04 未说明数据跨境传输 → 影响 EU UK CN ｜ 必须
+- [ ] P-05 未说明用户如何查阅、更正、删除个人数据 → 影响 EU UK US CN ｜ 必须
+- [ ] P-06 隐私政策内容与网站实际使用的工具不一致 → 影响 GLOBAL ｜ 必须
+- [ ] C-07 无法出示用户同意记录 → 影响 EU UK ｜ 必须
+- [ ] F-03 营销邮件没有退订方式 → 影响 GLOBAL ｜ 必须
+- [ ] F-04 收集敏感个人信息未单独取得同意 → 影响 CN EU ｜ 必须
+- [ ] CN-04 个人信息出境未单独取得同意 → 影响 CN ｜ 必须
+- [ ] L-01 字体、图片、视频、图标没有商用授权凭证 → 影响 GLOBAL ｜ 必须
+- [ ] CN-03 涉及经营性业务但没有 ICP 经营许可证 → 影响 CN ｜ 视情况（网站提供经营性互联网信息服务）
+
+## 采集信息
+
+- 发现的关键页面：privacy → https://www.gov.uk/help/privacy-notice（200）；cookie → https://www.gov.uk/help/cookies（200）；terms → https://www.gov.uk/help/terms-conditions（200）；accessibility → https://www.gov.uk/help/accessibility-statement（200）；contact → https://www.gov.uk/contact（200）
+- Cookie 横幅：识别到，按钮 Accept additional cookies[accept]、Reject additional cookies[reject]、View cookies[other]
+- 拒绝后状态：已点击「Reject additional cookies」并刷新，再访问内页 https://www.gov.uk/browse
+- 同意前请求的第三方域名（辅助核对 P-03 / P-06）：无
+

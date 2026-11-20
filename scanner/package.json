@@ -1,0 +1,17 @@
+{
+  "name": "site-compliance-check",
+  "version": "0.1.0",
+  "description": "Pre-launch website compliance scanner (privacy, cookies, disclosures, CN filing, accessibility). Not legal advice.",
+  "type": "module",
+  "bin": { "scc": "bin/scc.js" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test --test-concurrency=1 test/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "playwright": "^1.56.0",
+    "yaml": "^2.8.0"
+  }
+}
