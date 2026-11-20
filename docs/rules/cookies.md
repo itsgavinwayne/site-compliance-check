@@ -50,6 +50,8 @@
 
 **依据要点**：
 
+- 自建统计即使不写 Cookie，只要网站脚本让浏览器把时区、语言、UA 等信息或标识符发回服务器，就属于第 5(3) 条的"获取访问"（EDPB 指南 2/2023 第 32–33、63 段；基于 IP 的追踪见第 54–55 段）。属于该条范围不等于一定要征得同意，还要看能否适用豁免（第 56 段），由人工判定。出处：https://www.edpb.europa.eu/system/files/documents/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf（核实于 2026-11-20）
+
 - ePrivacy 指令 2002/58/EC，第 5(3) 条
 - GDPR，第 6(1) 条；第 7 条
 - 英国 PECR reg 6 及附表 A1，reg 6；附表 A1

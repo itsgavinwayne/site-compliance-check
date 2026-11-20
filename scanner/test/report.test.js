@@ -34,3 +34,15 @@ test('Markdown 末尾列出人工确认项', () => {
   assert.ok(md.indexOf('🔍 P-08') > i);
   assert.ok(md.indexOf('- [ ] L-01') > i);
 });
+
+test('视情况规则在行内写出适用条件，并在汇总里提示', () => {
+  const row = r({ id: 'CN-01', category: 'china', status: 'fail', level: 'conditional', condition: '在中国大陆境内提供服务', markets: ['CN'], missing: '没有 ICP 备案号' });
+  assert.equal(line(row), '❌ CN-01 没有 ICP 备案号 → 影响 CN ｜ 视情况（适用条件：在中国大陆境内提供服务）');
+  const ctx = { url: 'http://x.test', finalUrl: 'http://x.test', startedAt: 't', states: {}, keyPages: {}, errors: {} };
+  const md = buildMarkdown(buildJson(ctx, [row]));
+  assert.match(md, /不通过中有 1 条是"视情况"规则/);
+});
+
+test('必须级规则不附条件', () => {
+  assert.ok(line(r({ id: 'P-01', status: 'fail', level: 'must', missing: 'm', condition: 'x' })).endsWith('｜ 必须'));
+});
