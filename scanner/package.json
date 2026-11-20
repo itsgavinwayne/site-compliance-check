@@ -6,7 +6,9 @@
   "bin": { "scc": "bin/scc.js" },
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test --test-concurrency=1 test/"
+    "test": "node --test --test-concurrency=1 test/",
+    "checklist": "node ../scripts/gen-checklist.js",
+    "checklist:check": "node ../scripts/gen-checklist.js --check"
   },
   "license": "MIT",
   "dependencies": {
