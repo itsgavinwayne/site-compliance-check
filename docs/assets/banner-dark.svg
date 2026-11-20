@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-label="site-compliance-check: a report lists what is missing, which markets it affects, and how serious it is">
+<rect width="1280" height="420" fill="#0D1117"/>
+<text x="64" y="104" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="52" font-weight="700" fill="#E6EDF3" letter-spacing="-1">site-compliance-check</text>
+<text x="64" y="150" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="24" fill="#9DA7B3">Pre-launch website compliance check  /  网站上线前合规检查</text>
+<rect x="64" y="190" width="1152" height="182" rx="10" fill="#161B22" stroke="#30363D"/>
+<text x="96" y="226" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="17" fill="#9DA7B3">$ scc https://your-site.example</text>
+<circle cx="104" cy="264" r="9" fill="none" stroke="#F97066" stroke-width="2.5"/><path d="M99 259 l10 10 M109 259 l-10 10" stroke="#F97066" stroke-width="2.5"/>
+<text x="128" y="270" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#F97066">C-02</text>
+<text x="210" y="270" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#E6EDF3">Analytics cookies load before consent</text>
+<text x="760" y="270" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#9DA7B3">affects</text>
+<text x="840" y="270" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#9EC1EE">EU  UK</text>
+<text x="1184" y="270" text-anchor="end" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="19" fill="#F97066">Must</text>
+<circle cx="104" cy="304" r="9" fill="none" stroke="#FDB022" stroke-width="2.5"/><path d="M104 295 a9 9 0 0 1 0 18 z" fill="#FDB022"/>
+<text x="128" y="310" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#FDB022">CN-01</text>
+<text x="210" y="310" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#E6EDF3">No ICP filing number in the footer</text>
+<text x="760" y="310" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#9DA7B3">affects</text>
+<text x="840" y="310" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#9EC1EE">CN</text>
+<text x="1184" y="310" text-anchor="end" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="19" fill="#FDB022">Conditional</text>
+<circle cx="104" cy="344" r="9" fill="none" stroke="#47CD89" stroke-width="2.5"/><path d="M99 344 l4 4 l7 -8" fill="none" stroke="#47CD89" stroke-width="2.5"/>
+<text x="128" y="350" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#47CD89">P-01</text>
+<text x="210" y="350" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#E6EDF3">Privacy policy linked from every page</text>
+<text x="760" y="350" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" fill="#9DA7B3">affects</text>
+<text x="840" y="350" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#9EC1EE">GLOBAL</text>
+<text x="1184" y="350" text-anchor="end" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="19" fill="#47CD89">Must</text>
+</svg>
