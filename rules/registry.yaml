@@ -1,0 +1,253 @@
+# 规则登记表 — 扫描器、文档、skill 共用的唯一来源。字段说明见 SCHEMA.md
+# basis 为空 = 依据尚未核实（工作流 S1 负责填写）
+version: 0.0.1
+rules:
+  # ---------- P 隐私政策 ----------
+  - id: P-01
+    category: privacy-policy
+    missing: 没有隐私政策，或页脚点不到
+    markets: [GLOBAL]
+    level: must
+    check: auto
+    basis: []
+  - id: P-02
+    category: privacy-policy
+    missing: 隐私政策未说明收集哪些数据、用途、法律依据、保存期限
+    markets: [EU, UK, CN]
+    level: must
+    check: manual
+    basis: []
+  - id: P-03
+    category: privacy-policy
+    missing: 未列出接收数据的第三方（统计、CRM、邮件服务等）
+    markets: [EU, UK, CN, US]
+    level: must
+    check: manual
+    basis: []
+  - id: P-04
+    category: privacy-policy
+    missing: 未说明数据跨境传输
+    markets: [EU, UK, CN]
+    level: must
+    check: manual
+    basis: []
+  - id: P-05
+    category: privacy-policy
+    missing: 未说明用户如何查阅、更正、删除个人数据
+    markets: [EU, UK, US, CN]
+    level: must
+    check: manual
+    basis: []
+  - id: P-06
+    category: privacy-policy
+    missing: 隐私政策内容与网站实际使用的工具不一致
+    markets: [GLOBAL]
+    level: must
+    check: manual
+    basis: []
+  - id: P-07
+    category: privacy-policy
+    missing: 没有中文版隐私政策
+    markets: [CN]
+    level: must
+    check: hybrid
+    basis: []
+  - id: P-08
+    category: privacy-policy
+    missing: 隐私政策没有更新日期
+    markets: [US, EU]
+    level: recommended
+    check: hybrid
+    basis: []
+
+  # ---------- C Cookie 与追踪 ----------
+  - id: C-01
+    category: cookies
+    missing: 没有 Cookie 同意横幅
+    markets: [EU, UK]
+    level: must
+    check: auto
+    basis: []
+  - id: C-02
+    category: cookies
+    missing: 用户同意前已加载统计/广告类 Cookie 或脚本
+    markets: [EU, UK]
+    level: must
+    check: auto
+    basis: []
+  - id: C-03
+    category: cookies
+    missing: 横幅没有拒绝按钮，或拒绝比接受更难操作
+    markets: [EU, UK]
+    level: must
+    check: auto
+    basis: []
+  - id: C-04
+    category: cookies
+    missing: 同意选项默认勾选，或不能按类别选择
+    markets: [EU, UK]
+    level: must
+    check: hybrid
+    basis: []
+  - id: C-05
+    category: cookies
+    missing: 同意后没有入口修改或撤回同意
+    markets: [EU, UK]
+    level: must
+    check: hybrid
+    basis: []
+  - id: C-06
+    category: cookies
+    missing: 没有 Cookie 政策（名称、提供方、用途、有效期）
+    markets: [EU, UK]
+    level: must
+    check: auto
+    basis: []
+  - id: C-07
+    category: cookies
+    missing: 无法出示用户同意记录
+    markets: [EU, UK]
+    level: must
+    check: manual
+    basis: []
+  - id: C-08
+    category: cookies
+    missing: 第三方嵌入（YouTube、Google 地图、Google Fonts 等）在同意前加载
+    markets: [EU]
+    level: must
+    check: auto
+    basis: []
+  - id: C-09
+    category: cookies
+    missing: 没有 "Do Not Sell or Share My Personal Information" 链接
+    markets: [US]
+    level: conditional
+    condition: 达到加州等州隐私法的营收或数据量门槛
+    check: auto
+    basis: []
+  - id: C-10
+    category: cookies
+    missing: 未响应浏览器 GPC（全局隐私控制）信号
+    markets: [US]
+    level: conditional
+    condition: 达到加州、科罗拉多等州隐私法门槛
+    check: hybrid
+    basis: []
+
+  # ---------- F 表单与营销 ----------
+  - id: F-01
+    category: forms
+    missing: 收集个人信息的表单旁没有隐私政策链接
+    markets: [GLOBAL]
+    level: must
+    check: auto
+    basis: []
+  - id: F-02
+    category: forms
+    missing: 营销订阅默认勾选，或与提交捆绑
+    markets: [EU, UK]
+    level: must
+    check: auto
+    basis: []
+  - id: F-03
+    category: forms
+    missing: 营销邮件没有退订方式
+    markets: [GLOBAL]
+    level: must
+    check: manual
+    basis: []
+  - id: F-04
+    category: forms
+    missing: 收集敏感个人信息未单独取得同意
+    markets: [CN, EU]
+    level: must
+    check: manual
+    basis: []
+
+  # ---------- I 公示信息 ----------
+  - id: I-01
+    category: disclosure
+    missing: 缺少服务提供者信息（公司名、地址、邮箱、注册号、增值税号）
+    markets: [EU]
+    level: must
+    check: hybrid
+    basis: []
+  - id: I-02
+    category: disclosure
+    missing: 缺少公司名称、注册号、注册地址
+    markets: [UK]
+    level: must
+    check: hybrid
+    basis: []
+  - id: I-03
+    category: disclosure
+    missing: 没有 Impressum（运营者信息页）
+    markets: [DE, AT]
+    level: must
+    check: auto
+    basis: []
+  - id: I-04
+    category: disclosure
+    missing: 没有服务条款或法律声明
+    markets: [GLOBAL]
+    level: recommended
+    check: auto
+    basis: []
+
+  # ---------- CN 中国大陆 ----------
+  - id: CN-01
+    category: china
+    missing: 页脚没有 ICP 备案号，或未链接到 beian.miit.gov.cn
+    markets: [CN]
+    level: must
+    check: auto
+    basis: []
+  - id: CN-02
+    category: china
+    missing: 没有公安联网备案号
+    markets: [CN]
+    level: must
+    check: auto
+    basis: []
+  - id: CN-03
+    category: china
+    missing: 涉及经营性业务但没有 ICP 经营许可证
+    markets: [CN]
+    level: conditional
+    condition: 网站提供经营性互联网信息服务
+    check: manual
+    basis: []
+  - id: CN-04
+    category: china
+    missing: 个人信息出境未单独取得同意
+    markets: [CN]
+    level: must
+    check: manual
+    basis: []
+
+  # ---------- A 无障碍 ----------
+  - id: A-01
+    category: accessibility
+    missing: 未达到 WCAG 2.1 AA
+    markets: [EU, US]
+    level: conditional
+    condition: 欧盟 EAA 范围内（电商、面向消费者的服务）为必须；美国 ADA 有诉讼风险
+    check: hybrid
+    basis: []
+  - id: A-02
+    category: accessibility
+    missing: 没有无障碍声明
+    markets: [EU]
+    level: conditional
+    condition: 属于欧盟 EAA 范围
+    check: auto
+    basis: []
+
+  # ---------- L 素材授权 ----------
+  - id: L-01
+    category: licensing
+    missing: 字体、图片、视频、图标没有商用授权凭证
+    markets: [GLOBAL]
+    level: must
+    check: manual
+    basis: []
