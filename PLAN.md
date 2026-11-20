@@ -151,7 +151,7 @@ site-compliance-check/
 4. 用 1–2 个公开网站试跑，输出放 `examples/`。
 - 验收：`npx scc <url>` 能出报告；每条 auto 规则至少有一个通过和一个不通过的 fixture 测试；检查出错时状态为 `error` 而非 `pass`。
 
-### 阶段 2 — 整合（S1、S2 合并后）
+### 阶段 2 — 整合（✅ 已完成：S3 = PR #4，S4 = PR #5，口径 D1–D6 = PR #6）
 
 **S3 Skill 与人工清单**
 1. 脚本从登记表生成 `docs/checklist.md`。
@@ -162,7 +162,7 @@ site-compliance-check/
 - 用你自己的站跑一遍，按误报/漏报修正检查逻辑和规则描述。
 - 试跑报告写入 `reports/`（已 gitignore，**不进公开库**）。
 
-### 阶段 3 — 发布
+### 阶段 3 — 发布（✅ v0.1.0）
 - 打 `v0.1.0` tag，README 写清局限与免责声明。
 
 ## 6. 协作约定
