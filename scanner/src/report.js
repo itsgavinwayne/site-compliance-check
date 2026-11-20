@@ -27,7 +27,13 @@ export function line(r) {
   const note = one(r.note);
   const head = r.status === 'pass' ? '通过' : r.status === 'na' ? '不适用' : r.status === 'error' ? `检查出错（${one(r.missing)}）` : one(r.missing);
   const body = [ev, note && (ev ? `（${note}）` : note)].filter(Boolean).join('');
-  return `${ICON[r.status]} ${r.id} ${head}${body ? '：' + body : ''} → 影响 ${r.markets.join(' ')} ｜ ${LEVEL[r.level] || r.level}`;
+  return `${ICON[r.status]} ${r.id} ${head}${body ? '：' + body : ''} → 影响 ${r.markets.join(' ')} ｜ ${levelText(r)}`;
+}
+
+// 视情况的规则在每一行都写出适用条件：不通过只在满足条件时才算问题，由看报告的人对照
+export function levelText(r) {
+  const lv = LEVEL[r.level] || r.level;
+  return r.level === 'conditional' && r.condition ? `${lv}（适用条件：${one(r.condition)}）` : lv;
 }
 
 export function summarize(results) {
@@ -67,6 +73,8 @@ export function buildMarkdown(json) {
   out.push(`- 网址：${json.url}${json.finalUrl && json.finalUrl !== json.url ? `（最终 ${json.finalUrl}）` : ''}`);
   out.push(`- 扫描时间：${json.scannedAt}`);
   out.push(`- 结果：❌ 不通过 ${s.fail} ｜ 🔍 需人工 ${s.manual} ｜ ⚠️ 出错 ${s.error} ｜ ✅ 通过 ${s.pass} ｜ ➖ 不适用 ${s.na}`);
+  const condFail = json.results.filter((r) => r.status === 'fail' && r.level === 'conditional').length;
+  if (condFail) out.push(`- 不通过中有 ${condFail} 条是"视情况"规则：只在满足该行写明的适用条件时才算问题`);
   out.push('', `> ${json.disclaimer}`, '');
   const errs = Object.entries(json.phaseErrors || {});
   if (errs.length) {
@@ -95,7 +103,7 @@ export function buildMarkdown(json) {
   const man = json.results.filter((r) => !r.automated);
   if (man.length) {
     out.push('### 只能人工确认', '');
-    for (const r of man) out.push(`- [ ] ${r.id} ${one(r.missing)} → 影响 ${r.markets.join(' ')} ｜ ${LEVEL[r.level] || r.level}${r.condition ? `（${one(r.condition)}）` : ''}`);
+    for (const r of man) out.push(`- [ ] ${r.id} ${one(r.missing)} → 影响 ${r.markets.join(' ')} ｜ ${levelText(r)}`);
     out.push('');
   }
 

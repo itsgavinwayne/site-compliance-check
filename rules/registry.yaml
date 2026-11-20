@@ -1,6 +1,6 @@
 # 规则登记表 — 扫描器、文档、skill 共用的唯一来源。字段说明见 SCHEMA.md
 # basis 为空 = 依据尚未核实（工作流 S1 负责填写）
-version: 0.0.1
+version: 0.1.0
 rules:
   # ---------- P 隐私政策 ----------
   - id: P-01
@@ -311,10 +311,19 @@ rules:
         article: "同意前不得写入需同意的追踪器"
         url: "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/lignes-directrices-modificatives-et-recommandation"
         verified_at: "2026-11-20"
+      - law: "EDPB 指南 2/2023：ePrivacy 第 5(3) 条的技术范围（2.0 版，2024-10-07 通过）"
+        article: "第 32–33 段（脚本指示浏览器发送信息即属获取访问）；第 54–56 段（IP 追踪；适用不等于必须同意）；第 63 段（唯一标识符）"
+        url: "https://www.edpb.europa.eu/system/files/documents/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf"
+        verified_at: "2026-11-20"
     how_to_verify: >-
       无痕窗口打开首页，不点任何按钮，等待加载完成后检查 Cookie、localStorage 和网络请求：
       出现 _ga、_gid、_fbp、广告/统计域名请求，判不通过；只有会话、负载均衡、安全、同意状态等严格必要项，判通过。
+      自建统计即使不写 Cookie，只要由网站脚本让浏览器把时区、语言、UA 等信息或标识符发回服务器，也属于 ePrivacy 第 5(3) 条的"获取访问"
+      （EDPB 指南 2/2023 第 32–33、63 段），基于 IP 的追踪通常也在范围内（第 54–55 段）。这种情况下同意前就上报，默认判不通过；
+      除非运营方能说明适用豁免（严格必要，或所在国监管机构认可的受众测量豁免，UK 见下方 DUAA），并且隐私政策如实披露。
     notes: >-
+      扫描器对自建统计只能凭端点路径启发式识别，所以判为"需人工"，由人工按上面的判定方法定结论。
+      EDPB 指南 2/2023 只界定 5(3) 的适用范围，不分析豁免（第 56 段）；各国受众测量豁免的具体条件本次未核实。
       UK：DUAA 2025 附表 A1 允许统计分析类技术在满足条件时免于同意（自 2026-02-05 起），条件包括清楚告知、
       数据只用于改进服务、提供简单免费的反对方式。UK 网站同意前加载统计脚本时，要人工确认是否满足这些条件；广告类不在豁免内。
 
@@ -697,7 +706,8 @@ rules:
     category: disclosure
     missing: 缺少服务提供者信息（公司名、地址、邮箱、注册号、增值税号）
     markets: [EU]
-    level: must
+    level: conditional
+    condition: 运营方在欧盟/欧洲经济区设立，提供商业性在线服务
     check: hybrid
     basis:
       - law: "电子商务指令 2000/31/EC"
@@ -707,13 +717,16 @@ rules:
     how_to_verify: >-
       在任何页面都能一两次点击到达的位置（页脚"关于我们/法律信息/Impressum"等），能看到：经营者名称、实际地址（不能只有邮箱）、
       电子邮箱、商业登记机关及编号（已登记的）、增值税号（有的）、需许可行业的监管机关。缺任一适用项判不通过。
-    notes: "各成员国转化法会再细化，DE/AT 见 I-03。"
+    notes: >-
+      各成员国转化法会再细化，DE/AT 见 I-03。电子商务指令按"设立地"适用于在成员国设立的服务提供者，故改为 conditional；
+      欧盟以外的运营方面向欧盟用户时是否适用，属于各成员国法律解释，待核实。政府、非商业网站一般不适用。
 
   - id: I-02
     category: disclosure
     missing: 缺少公司名称、注册号、注册地址
     markets: [UK]
-    level: must
+    level: conditional
+    condition: 运营方是在英国注册的公司或 LLP（电子商务条例部分适用于在英国设立的服务提供者）
     check: hybrid
     basis:
       - law: "The Company, LLP and Business (Names and Trading Disclosures) Regulations 2015（SI 2015/17）"
@@ -731,13 +744,16 @@ rules:
     how_to_verify: >-
       英国注册公司的网站上（通常在页脚或"法律信息"页）应写明：公司注册全称、注册地区（如 England and Wales）、公司注册号、注册办公地址。
       另按电子商务条例写明邮箱和 VAT 号（如有）。缺任一项判不通过。
-    notes: "原 Companies (Trading Disclosures) Regulations 2008（SI 2008/495）已被 SI 2015/17 废止，不要再引用。"
+    notes: >-
+      原 Companies (Trading Disclosures) Regulations 2008（SI 2008/495）已被 SI 2015/17 废止，不要再引用。
+      SI 2015/17 约束的是英国注册的公司、LLP，故改为 conditional；非英国公司不适用这几项披露。
 
   - id: I-03
     category: disclosure
     missing: 没有 Impressum（运营者信息页）
     markets: [DE, AT]
-    level: must
+    level: conditional
+    condition: 运营方在德国/奥地利设立，或面向德奥用户提供商业性数字服务
     check: auto
     basis:
       - law: "德国 Digitale-Dienste-Gesetz（DDG）"
@@ -751,6 +767,8 @@ rules:
       AT 部分待核实：奥地利 E-Commerce-Gesetz §5、Mediengesetz §25（Offenlegung）、UGB §14 的条文在 RIS
       （https://ris.bka.gv.at/eli/bgbl/i/2001/152/P5/NOR40025801）因机器人验证无法读取正文，只通过 RIS 官方 API 确认条文存在且现行有效，内容未核实。
       德国新闻性内容另有 Medienstaatsvertrag §18 的要求，州际条约官方文本未取得，待核实。
+      适用范围（2026-11-20 核实 DDG §1、§3、§5）：§5 针对"商业性、通常有偿"的数字服务；§3 来源国原则只涉及在德国或其他成员国设立的提供者，
+      条文没有写到欧盟以外的提供者。非欧盟运营方面向德国用户时是否须设 Impressum 属于法律解释，故改为 conditional。
 
   - id: I-04
     category: disclosure
@@ -771,7 +789,8 @@ rules:
     category: china
     missing: 页脚没有 ICP 备案号，或未链接到 beian.miit.gov.cn
     markets: [CN]
-    level: must
+    level: conditional
+    condition: 在中国大陆境内提供互联网信息服务（境内组织或个人、通过境内接入的网站）
     check: auto
     basis:
       - law: "《互联网信息服务管理办法》（国务院令第 292 号）"
@@ -779,7 +798,7 @@ rules:
         url: "https://szwljb.sz.gov.cn/flfg/xzfg/content/post_240023.html"
         verified_at: "2026-11-20"
       - law: "《非经营性互联网信息服务备案管理办法》（2024 年工信部令第 68 号修订）"
-        article: "第 13 条（主页底部中央标明备案编号，并在编号下方链接工信部备案管理系统网址）"
+        article: "第 2 条、第 5 条（适用于在中华人民共和国境内提供服务）；第 13 条（主页底部中央标明备案编号，并在编号下方链接工信部备案管理系统网址）"
         url: "https://www.miit.gov.cn/gyhxxhb/jgsj/cyzcyfgs/bmgz/xxtxl/art/2024/art_84a0cfa0ebd049bbbe751dca9a008e56.html"
         verified_at: "2026-11-20"
     how_to_verify: >-
@@ -787,13 +806,15 @@ rules:
     notes: >-
       292 号令文本取自地方网信部门（深圳）转载页，未找到中央部委页面对照。网信办 2026-07 发布的修订草案（再次征求意见稿）
       拟把标注位置改为"方便查询位置"，尚未施行，需跟踪（http://www.fjwx.gov.cn/yw/20260703/3022140.html）。
-      哪些网站需要备案（如服务器在境外的情形）本次未核实，判定时以工信部备案系统说明为准。
+      适用范围：68 号令第 2、5 条把备案义务限定为"在中华人民共和国境内提供"非经营性互联网信息服务（2026-11-20 核实），
+      因此改为 conditional。境外托管、面向海外的站点通常不适用；具体以工信部备案系统说明为准。
 
   - id: CN-02
     category: china
     missing: 没有公安联网备案号
     markets: [CN]
-    level: must
+    level: conditional
+    condition: 网站在中国大陆境内联网（与 CN-01 同一判断：需要 ICP 备案的网站）
     check: auto
     basis:
       - law: "《计算机信息网络国际联网安全保护管理办法》（公安部令第 33 号，2011 修订）"
@@ -806,6 +827,7 @@ rules:
     notes: >-
       待核实：第 12 条只规定了备案义务，没有要求在页面显示备案号。"首页底部显示公安备案号并链接到全国互联网安全管理服务平台"的要求，
       2026-11-20 未能从官方页面核实（beian.mps.gov.cn 是单页应用无法抓取，mps.gov.cn 无法访问）。扫描器只检查显示，判定时要说明这一点。
+      适用范围与 CN-01 一致，故改为 conditional；33 号令的地域范围条文本次未单独核实。
 
   - id: CN-03
     category: china
